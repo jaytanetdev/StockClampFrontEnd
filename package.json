@@ -1,0 +1,40 @@
+{
+  "name": "nextst",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "codegen": "openapi -i http://localhost:5000/doc-json -o ./src/api/generated -c axios --name ApiClient --indent 2"
+  },
+  "dependencies": {
+    "@ant-design/v5-patch-for-react-19": "^1.0.3",
+    "@fullcalendar/core": "^6.1.15",
+    "@fullcalendar/daygrid": "^6.1.15",
+    "@fullcalendar/interaction": "^6.1.15",
+    "@fullcalendar/react": "^6.1.15",
+    "@fullcalendar/timegrid": "^6.1.15",
+    "antd": "^5.23.4",
+    "axios": "^1.7.9",
+    "lucide-react": "^0.477.0",
+    "next": "^15.2.1",
+    "next-themes": "^0.4.4",
+    "openapi-typescript-codegen": "^0.29.0",
+    "react": "19",
+    "react-dom": "19",
+    "uuid": "^11.0.5"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react": "19",
+    "@types/react-dom": "19",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.5",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}
