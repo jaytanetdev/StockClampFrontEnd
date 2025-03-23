@@ -4,25 +4,7 @@
 
 :root {
   --background: black;
-  --foreground: #1a1a1a;
-}
-
-.light body {
-  background-color: white;
-  color: black;
-}
-
-.dark body {
-  background-color: black;
-  color: white;
-}
-
-.dark .ant-form-item-label label {
-  color: white; /* ✅ เปลี่ยนสี label เป็นขาวเมื่อ dark mode */
-}
-
-.light .ant-form-item-label label {
-  color: black; /* ✅ เปลี่ยนสี label เป็นดำเมื่อ light mode */
+  --foreground:  #FFFFFF;
 }
 
 

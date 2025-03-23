@@ -3,6 +3,7 @@ import { geistSans, geistMono } from "../styles/fonts";
 import Navbar from "@/components/Navbar/Navbar";
 import Providers from "@/Providers";
 import "@ant-design/v5-patch-for-react-19";
+import LoadingCustom from "@/components/LoadingCustom";
 // import { ThemeProvider } from "@/components/ThemeProvider";
 
 export default function RootLayout({
@@ -15,14 +16,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        
         {/* <ThemeProvider attribute="class"> */}
-          <Providers>
-            <div className="flex flex-col ">
-              <Navbar />
-              <div className="flex-1 container mx-auto">{children}</div>
-            </div>
-          </Providers>
+        <Providers>
+          {children}
+          <LoadingCustom />
+        </Providers>
         {/* </ThemeProvider> */}
       </body>
     </html>

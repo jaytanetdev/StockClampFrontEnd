@@ -23,6 +23,9 @@ export class TodoService {
       url: '/api/v1/todo',
       body: requestBody,
       mediaType: 'application/json',
+      errors: {
+        400: `Invalid input data`,
+      },
     });
   }
   /**
@@ -47,19 +50,13 @@ export class TodoService {
   }
   /**
    * Get  todos by ID
-   * @param id
    * @returns any
    * @throws ApiError
    */
-  public todoControllerFindOneV1(
-    id: string,
-  ): CancelablePromise<any> {
+  public todoControllerFindOneV1(): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
       url: '/api/v1/todo/{id}',
-      path: {
-        'id': id,
-      },
     });
   }
   /**

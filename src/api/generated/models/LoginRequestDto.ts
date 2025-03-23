@@ -2,10 +2,14 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type CreateUserDto = {
-  firstName: string;
-  lastName: string;
+export type LoginRequestDto = {
+  /**
+   * User email address
+   */
   email: string;
-  passwordHash: string;
+  /**
+   * User password
+   */
+  password: string;
 };
 

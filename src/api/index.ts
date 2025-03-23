@@ -31,6 +31,7 @@ export class CustomAxios extends BaseHttpRequest {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json; charset=utf-8",
+      
       [INIT_ID_HEADER_NAME]: this.initId,
     },
   });
@@ -60,7 +61,7 @@ export class CustomAxios extends BaseHttpRequest {
     );
     this.axiosAuthorizedInstance.interceptors.response.use(
       this._responseInterceptor(this),
-    //   this._authorizedInstanceErrorHandler(this)
+      this._authorizedInstanceErrorHandler(this)
     );
   }
 
@@ -81,55 +82,55 @@ export class CustomAxios extends BaseHttpRequest {
     };
   }
 
-//   private async _refreshToken() {
-//     await apiClient.authentication.authControllerRefreshV1()
-//   }
+  private async _refreshToken() {
+    await apiClient.authentication.authControllerRefreshV1()
+  }
 
-//   private _authorizedInstanceErrorHandler(that: CustomAxios) {
-//     return async function (error: AxiosError) {
-//       const originalRequest = error.config;
-//       console.log("[Authorized axios] error.response", error.response?.data);
-//       if (error?.response?.status === 401) {
-//         const cause = (error?.response?.data as any)?.cause;
-//         if (cause === "TokenExpiredError" || cause === "JsonWebTokenError") {
-//           if (!that.isRefreshing) {
-//             that.isRefreshing = true;
-//             await that._refreshToken();
+  private _authorizedInstanceErrorHandler(that: CustomAxios) {
+    return async function (error: AxiosError) {
+      const originalRequest = error.config;
+      console.log("[Authorized axios] error.response", error.response?.data);
+      if (error?.response?.status === 401) {
+        const cause = (error?.response?.data as any)?.cause;
+        if (cause === "TokenExpiredError" || cause === "JsonWebTokenError") {
+          if (!that.isRefreshing) {
+            that.isRefreshing = true;
+            await that._refreshToken();
 
-//             // Retry all requests in the queue with the new token
-//             that.refreshAndRetryQueue.forEach(({ config, resolve, reject }) => {
-//               that.axiosAuthorizedInstance
-//                 .request(config!)
-//                 .then((response) => resolve(response))
-//                 .catch((err) => reject(err));
-//             });
+            // Retry all requests in the queue with the new token
+            that.refreshAndRetryQueue.forEach(({ config, resolve, reject }) => {
+              that.axiosAuthorizedInstance
+                .request(config!)
+                .then((response) => resolve(response))
+                .catch((err) => reject(err));
+            });
 
-//             // Clear the queue
-//             that.refreshAndRetryQueue.length = 0;
-//             that.isRefreshing = false;
+            // Clear the queue
+            that.refreshAndRetryQueue.length = 0;
+            that.isRefreshing = false;
 
-//             // Retry the original request
-//             return that.axiosAuthorizedInstance(originalRequest!);
-//           }
-//           // that.isRefreshing = false
+            // Retry the original request
+            return that.axiosAuthorizedInstance(originalRequest!);
+          }
+          // that.isRefreshing = false
 
-//           return new Promise<void>((resolve, reject) => {
-//             that.refreshAndRetryQueue.push({
-//               config: originalRequest,
-//               resolve,
-//               reject,
-//             });
-//           });
-//         }
+          return new Promise<void>((resolve, reject) => {
+            that.refreshAndRetryQueue.push({
+              config: originalRequest,
+              resolve,
+              reject,
+            });
+          });
+        }
 
-//         // if (cause === 'JsonWebTokenError') {
-//         //   window.location.href = '/login'
-//         // }
-//       }
+        if (cause === 'JsonWebTokenError') {
+          window.location.href = '/login'
+        }
+      }
 
-//       throw error;
-//     };
-//   }
+      throw error;
+    };
+  }
 
   private _publicInstanceErrorHandler(that: CustomAxios) {
     return function (error: AxiosError) {

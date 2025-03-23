@@ -1,16 +1,43 @@
 "use client";
 
+import apiClient from "@/api";
+import { ApiError, LoginRequestDto } from "@/api/generated";
 import ButtonCustom from "@/components/Button/ButtonCustom";
 import InputCustom from "@/components/Input/InputCustom";
-import { Form, FormProps } from "antd";
+import { useGlobal } from "@/contexts/GlobalContext";
+import { showNotification } from "@/utils/notification";
+import { Form } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-
+import { useRouter } from "next/navigation";
 
 export default function LoginUI() {
-  const onFinish = (dataForm: FormProps) => {
-    console.log(dataForm);
+  const { setIsLoading } = useGlobal();
+  const routes = useRouter();
+  const onFinish = async (dataForm: LoginRequestDto) => {
+    setIsLoading(true);
+    try {
+      const res = await apiClient.authentication.authControllerLoginPasswordV1({
+        email: dataForm.email,
+        password: dataForm.password,
+      });
+      const userProfile = {
+        email: res.result.user.email,
+        firstName: res.result.user.firstName,
+        lastName: res.result.user.lastName,
+        id: res.result.user.id,
+      };
+      localStorage.setItem("userProfile", JSON.stringify(userProfile));
+      routes.replace("/todo");
+    } catch (e) {
+      if (e instanceof ApiError) {
+        showNotification("error", "ล้มเหลว", e.body.message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
+
   return (
     <div className="flex items-center justify-center min-h-screen ">
       <div className="bg-white flex  rounded-lg shadow-lg  ">
@@ -22,12 +49,15 @@ export default function LoginUI() {
             width={128}
             height={128}
           />
-          <span className="text-3xl font-semibold">Login to JTL.Shop</span>
+          <span className="text-3xl font-semibold text-black">
+            Login to JTL.Shop
+          </span>
           <span className="font-light text-sm text-gray-400">
             Please enter your Details
           </span>
           <Form layout="vertical" onFinish={onFinish} className="w-full">
             <InputCustom
+              classLabel={"text-black"}
               label="Email"
               name="email"
               type="emil"
@@ -39,6 +69,7 @@ export default function LoginUI() {
             />
 
             <InputCustom
+              classLabel={"text-black"}
               label="Password"
               name="password"
               type="password"
@@ -69,7 +100,7 @@ export default function LoginUI() {
             <span className="text-md text-gray-400 font-bold">
               <span>Don&apos;t have an account?</span>
             </span>
-            <Link href="/signup" className="font-bold text-sm hover:underline">
+            <Link href="/signup" className="font-bold text-sm hover:underline text-black">
               {"Sign up"}
             </Link>
           </div>

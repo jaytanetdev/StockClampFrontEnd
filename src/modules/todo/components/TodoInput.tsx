@@ -32,18 +32,21 @@ const TodoInput = () => {
   );
 
   const onFinish: FormProps<TodoFormFields>["onFinish"] = async (values) => {
-    const date = values.dateTodo
+    const date = values.dateTodo;
     try {
       const result = await apiClient.todo.todoControllerCreateV1({
-        uuidUser: "cffab042-49ed-43dc-80fa-7ed78c79eacd",
-        dateTodoStart: date?.[0] ? date[0].toISOString() : new Date().toISOString(),
-        dateTodoEnd: date?.[1] ? date[1].toISOString() : new Date().toISOString(),
+        dateTodoStart: date?.[0]
+          ? date[0].toISOString()
+          : new Date().toISOString(),
+        dateTodoEnd: date?.[1]
+          ? date[1].toISOString()
+          : new Date().toISOString(),
         title: values.title,
       });
 
       if (result.success) {
         addTodoList(result.result);
-        form.resetFields();
+        form.setFieldsValue({ title: "" });
         showNotification("success", "สำเร็จ", "บันทึกสำเร็จ");
       }
     } catch (e) {
@@ -79,6 +82,7 @@ const TodoInput = () => {
 
         <div className="w-full md:w-2/5">
           <InputCustom
+            classLabel="text-white"
             name="title"
             label="รายการที่ต้องทำ"
             placeholder="กรุณากรอก รายการที่ต้องทำ"
@@ -90,7 +94,11 @@ const TodoInput = () => {
           />
         </div>
         <div className="md:w-1/5">
-          <ButtonCustom type="primary" htmlType="submit"   className="w-full h-10">
+          <ButtonCustom
+            type="primary"
+            htmlType="submit"
+            className="w-full h-10"
+          >
             {"บันทึกรายการ"}
           </ButtonCustom>
         </div>

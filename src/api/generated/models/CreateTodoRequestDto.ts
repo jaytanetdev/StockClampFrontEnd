@@ -3,7 +3,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export type CreateTodoRequestDto = {
-  uuidUser: string;
   title: string;
   dateTodoStart: string;
   dateTodoEnd: string;

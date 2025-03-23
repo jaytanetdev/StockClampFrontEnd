@@ -20,15 +20,14 @@ export function Calendar() {
     <div>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin]}
-        initialView={"dayGridMonth"} // หรือ timeGridWeek, dayGridDay ตามที่ต้องการ
+        initialView={"dayGridMonth"} 
         events={eventTodo ?? undefined}
         dayCellClassNames={(args) => {
-          // ตรวจสอบว่าเซลล์ที่กำลังจะถูก render คือวันที่ปัจจุบันหรือไม่
           const today = new Date();
           const currentDate = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
           
           if (args.dateStr === currentDate) {
-            return ['today-cell']; // เพิ่มคลาส 'today-cell' สำหรับเซลล์ที่ตรงกับวันที่ปัจจุบัน
+            return ['today-cell']; 
           }
           return [];
         }}

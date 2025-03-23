@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateUserDto } from '../models/CreateUserDto';
+import type { CreatUserResponseDto } from '../models/CreatUserResponseDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class UsersService {
@@ -10,17 +11,20 @@ export class UsersService {
   /**
    * Register User
    * @param requestBody
-   * @returns any
+   * @returns CreatUserResponseDto User Created Successfully
    * @throws ApiError
    */
   public usersControllerCreateV1(
     requestBody: CreateUserDto,
-  ): CancelablePromise<any> {
+  ): CancelablePromise<CreatUserResponseDto> {
     return this.httpRequest.request({
       method: 'POST',
       url: '/api/v1/users',
       body: requestBody,
       mediaType: 'application/json',
+      errors: {
+        400: `Invalid input data`,
+      },
     });
   }
   /**

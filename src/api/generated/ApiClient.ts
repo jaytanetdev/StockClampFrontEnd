@@ -6,11 +6,13 @@ import type { BaseHttpRequest } from './core/BaseHttpRequest';
 import type { OpenAPIConfig } from './core/OpenAPI';
 import { AxiosHttpRequest } from './core/AxiosHttpRequest';
 import { AppService } from './services/AppService';
+import { AuthenticationService } from './services/AuthenticationService';
 import { TodoService } from './services/TodoService';
 import { UsersService } from './services/UsersService';
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class ApiClient {
   public readonly app: AppService;
+  public readonly authentication: AuthenticationService;
   public readonly todo: TodoService;
   public readonly users: UsersService;
   public readonly request: BaseHttpRequest;
@@ -27,6 +29,7 @@ export class ApiClient {
       ENCODE_PATH: config?.ENCODE_PATH,
     });
     this.app = new AppService(this.request);
+    this.authentication = new AuthenticationService(this.request);
     this.todo = new TodoService(this.request);
     this.users = new UsersService(this.request);
   }

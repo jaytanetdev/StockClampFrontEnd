@@ -4,17 +4,19 @@ interface InputCustomProps extends InputProps {
   label: string;
   name: string;
   formItemProps?: FormItemProps;
+  classLabel?: string;
 }
 
 const InputCustom = ({
   label,
   name,
   formItemProps,
+  classLabel,
   ...rest
 }: InputCustomProps) => {
   return (
     <Form.Item
-      label={<span className=" text-black ">{label}</span>}
+      label={<span className={` ${classLabel}`}>{label}</span>}
       name={name}
       validateTrigger={["onChange", "onBlur"]}
       {...formItemProps}

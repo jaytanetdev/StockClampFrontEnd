@@ -1,7 +1,8 @@
 "use client";
 
 import apiClient from "@/api";
-import { CreateTodoResultDto } from "@/api/generated";
+import { ApiError, CreateTodoResultDto } from "@/api/generated";
+import { showNotification } from "@/utils/notification";
 import React, {
   createContext,
   useContext,
@@ -14,9 +15,14 @@ import React, {
 interface TodoListContextType {
   todosList: CreateTodoResultDto[];
   fetchTodos?: () => void;
-  addTodoList: ({ id,title, dateTodoStart, dateTodoEnd }: CreateTodoResultDto) => void;
+  addTodoList: ({
+    id,
+    title,
+    dateTodoStart,
+    dateTodoEnd,
+  }: CreateTodoResultDto) => void;
   removeTodoList: (id: string) => void;
-  pendingTodoList:boolean
+  pendingTodoList: boolean;
 }
 
 const TodoListContext = createContext<TodoListContextType | undefined>(
@@ -27,17 +33,18 @@ export const TodoListProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [todosList, setTodosList] = useState<CreateTodoResultDto[]>([]);
   const [pendingTodoList, fectPendingTodoList] = useTransition();
+
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const response = await apiClient.todo.todoControllerFindOneV1(
-          "cffab042-49ed-43dc-80fa-7ed78c79eacd"
-        );
+        const response = await apiClient.todo.todoControllerFindOneV1();
         if (response.success) {
           setTodosList(response.result);
         }
-      } catch (error) {
-        console.error("Failed to load todos:", error);
+      } catch (e) {
+        if (e instanceof ApiError) {
+          showNotification("error", "Error", e.body?.message);
+        }
       }
     };
     fectPendingTodoList(fetchTodos);
@@ -53,7 +60,7 @@ export const TodoListProvider: React.FC<{ children: ReactNode }> = ({
 
   return (
     <TodoListContext.Provider
-      value={{ todosList, addTodoList, removeTodoList ,pendingTodoList}}
+      value={{ todosList, addTodoList, removeTodoList, pendingTodoList }}
     >
       {children}
     </TodoListContext.Provider>
