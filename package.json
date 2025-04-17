@@ -7,15 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "codegen": "openapi -i http://localhost:5000/doc-json -o ./src/api/generated -c axios --name ApiClient --indent 2"
+    "codegen": "openapi -i http://localhost:9000/doc-json -o ./src/api/generated -c axios --name ApiClient --indent 2"
   },
   "dependencies": {
+    "@ant-design/icons": "5.x",
     "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/react": "^6.1.15",
     "@fullcalendar/timegrid": "^6.1.15",
+    "@uidotdev/usehooks": "^2.4.1",
     "antd": "^5.23.4",
     "axios": "^1.7.9",
     "lucide-react": "^0.477.0",

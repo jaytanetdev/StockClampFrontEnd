@@ -1,35 +1,34 @@
-import { Form, Input, FormItemProps, InputProps } from "antd";
+import {
+  Form,
+  FormItemProps,
+  Select,
+  SelectProps,
+} from "antd";
 
-interface InputCustomProps extends InputProps {
+interface SelectCustomProps extends SelectProps {
   label: string;
   name: string;
   formItemProps?: FormItemProps;
   classLabel?: string;
 }
 
-const InputCustom = ({
+const SelectCustom = ({
   label,
   name,
   formItemProps,
   classLabel,
   ...rest
-}: InputCustomProps) => {
+}: SelectCustomProps) => {
   return (
-    <div className="w-full">
     <Form.Item
       label={<span className={` ${classLabel}`}>{label}</span>}
       name={name}
       validateTrigger={["onChange", "onBlur"]}
       {...formItemProps}
     >
-      {rest.type === "password" ? (
-        <Input.Password {...rest} />
-      ) : (
-        <Input {...rest} />
-      )}
+      <Select showSearch optionFilterProp="label" {...rest} />
     </Form.Item>
-    </div>
   );
 };
 
-export default InputCustom;
+export default SelectCustom;

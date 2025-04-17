@@ -1,28 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ApiError, UserResponseAutuDto } from "@/api/generated";
+import { ApiError, GetUserResultDto } from "@/api/generated";
 import apiClient from "@/api";
 import { useRouter } from "next/navigation";
 import { showNotification } from "@/utils/notification";
 import { LogoutOutlined } from "@ant-design/icons";
+import { useGlobalContext } from "@/contexts/GlobalContext";
 
 const Navbar = () => {
   const router = useRouter();
-  const [userProfile, setUserProfile] = useState<
-    UserResponseAutuDto | undefined
-  >(undefined);
-
-  useEffect(() => {
-    const stored = localStorage.getItem("userProfile");
-    if (stored) {
-      setUserProfile(JSON.parse(stored));
-    }
-  }, []);
+  const { userProfile } = useGlobalContext();
 
   const handlelogout = async () => {
     try {
-      await apiClient.authentication.authControllerLogoutV1();
+      await apiClient.auth.authControllerLogoutV1();
       router.replace("/login");
       localStorage.removeItem("userProfile");
     } catch (e) {
@@ -32,9 +24,9 @@ const Navbar = () => {
     }
   };
   return (
-    <nav>
-      <div className="flex items-center justify-end bg-blue-950 h-[60px]   text-white px-4 gap-2">
-        <p>
+    <nav className="w-full">
+      <div className="flex items-center justify-end  border-b-2 border-blue-950 h-[80px]   text-blue-950 px-4 gap-2">
+        <p className="font-semibold">
           {userProfile?.firstName} {userProfile?.lastName}
         </p>
         <LogoutOutlined onClick={handlelogout} className="text-red-600" />

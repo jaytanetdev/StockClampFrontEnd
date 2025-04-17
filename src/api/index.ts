@@ -31,7 +31,7 @@ export class CustomAxios extends BaseHttpRequest {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json; charset=utf-8",
-      
+
       [INIT_ID_HEADER_NAME]: this.initId,
     },
   });
@@ -83,7 +83,7 @@ export class CustomAxios extends BaseHttpRequest {
   }
 
   private async _refreshToken() {
-    await apiClient.authentication.authControllerRefreshV1()
+    window.location.href = "/login";
   }
 
   private _authorizedInstanceErrorHandler(that: CustomAxios) {
@@ -123,8 +123,8 @@ export class CustomAxios extends BaseHttpRequest {
           });
         }
 
-        if (cause === 'JsonWebTokenError') {
-          window.location.href = '/login'
+        if (cause === "JsonWebTokenError") {
+          window.location.href = "/login";
         }
       }
 

@@ -6,15 +6,23 @@ import type { BaseHttpRequest } from './core/BaseHttpRequest';
 import type { OpenAPIConfig } from './core/OpenAPI';
 import { AxiosHttpRequest } from './core/AxiosHttpRequest';
 import { AppService } from './services/AppService';
-import { AuthenticationService } from './services/AuthenticationService';
-import { TodoService } from './services/TodoService';
-import { UsersService } from './services/UsersService';
+import { AuthService } from './services/AuthService';
+import { MaterialService } from './services/MaterialService';
+import { ModelService } from './services/ModelService';
+import { OptionService } from './services/OptionService';
+import { OrderService } from './services/OrderService';
+import { ProductService } from './services/ProductService';
+import { UserService } from './services/UserService';
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class ApiClient {
   public readonly app: AppService;
-  public readonly authentication: AuthenticationService;
-  public readonly todo: TodoService;
-  public readonly users: UsersService;
+  public readonly auth: AuthService;
+  public readonly material: MaterialService;
+  public readonly model: ModelService;
+  public readonly option: OptionService;
+  public readonly order: OrderService;
+  public readonly product: ProductService;
+  public readonly user: UserService;
   public readonly request: BaseHttpRequest;
   constructor(config?: Partial<OpenAPIConfig>, HttpRequest: HttpRequestConstructor = AxiosHttpRequest) {
     this.request = new HttpRequest({
@@ -29,9 +37,13 @@ export class ApiClient {
       ENCODE_PATH: config?.ENCODE_PATH,
     });
     this.app = new AppService(this.request);
-    this.authentication = new AuthenticationService(this.request);
-    this.todo = new TodoService(this.request);
-    this.users = new UsersService(this.request);
+    this.auth = new AuthService(this.request);
+    this.material = new MaterialService(this.request);
+    this.model = new ModelService(this.request);
+    this.option = new OptionService(this.request);
+    this.order = new OrderService(this.request);
+    this.product = new ProductService(this.request);
+    this.user = new UserService(this.request);
   }
 }
 

@@ -1,10 +1,10 @@
 'use client'
 import React from "react";
 import { Spin } from "antd";
-import { useGlobal } from "@/contexts/GlobalContext";
+import { useGlobalContext } from "@/contexts/GlobalContext";
 
 const LoadingCustom: React.FC = () => {
-  const { isLoading } = useGlobal();
+  const { isLoading } = useGlobalContext();
 
   if (!isLoading) {
     return null;
