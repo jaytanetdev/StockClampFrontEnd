@@ -4,7 +4,7 @@ import { Modal, ModalProps } from "antd";
 interface ModalCustomProps extends ModalProps {
   title:string;
   isModalOpen: boolean;
-  handleOk?: (data?: any) => void; 
+  handleOk?: (data?: unknown) => void; 
   handleCancel: () => void;
   children?: React.ReactNode;
 }

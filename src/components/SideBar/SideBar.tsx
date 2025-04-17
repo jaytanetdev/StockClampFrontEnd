@@ -9,7 +9,6 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
 
 const menu = [
   {
@@ -35,7 +34,6 @@ const menu = [
 ];
 
 const SideBar = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
   return (
     

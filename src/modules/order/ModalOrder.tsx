@@ -7,7 +7,6 @@ import {
   GetModelResultDto,
   GetOptionResultDto,
   GetOrderResultDto,
-  ProductResultDto,
   ProductResultGetDto,
 } from "@/api/generated";
 import ButtonCustom from "@/components/Button/ButtonCustom";

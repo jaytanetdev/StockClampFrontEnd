@@ -1,7 +1,7 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
-/* eslint-disable */
+ 
 import type { CreateProductDto } from '../models/CreateProductDto';
 import type { CreateProductResponseDto } from '../models/CreateProductResponseDto';
 import type { GetProductBaseResponseDto } from '../models/GetProductBaseResponseDto';

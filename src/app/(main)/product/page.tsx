@@ -2,7 +2,6 @@
 
 import apiClient from "@/api";
 import {
-  GetOptionResponseDto,
   GetOptionResultDto,
   ProductResultDto,
 } from "@/api/generated";
@@ -11,7 +10,7 @@ import TableCustom from "@/components/Table/TableCustomer";
 import ModalProduct from "@/modules/product/ModalProduct";
 import { PlusOutlined } from "@ant-design/icons";
 import { Skeleton, TableProps } from "antd";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState } from "react";
 
 export default function ProductPage() {
   const defaulPage = { page: 1, pageSize: 10 };
@@ -59,7 +58,7 @@ export default function ProductPage() {
       key: "no",
       onHeaderCell: () => ({ style: { height: "50px", width: "10px" } }),
       onCell: () => ({ style: { height: "50px", width: "10px" } }),
-      render: (_value: any, record: ProductResultDto, index: number) => {
+      render: (_value, record: ProductResultDto, index: number) => {
         return (
           <p>{index + 1 + (pagination.current - 1) * pagination.pageSize}</p>
         );
@@ -71,7 +70,7 @@ export default function ProductPage() {
       key: "group",
       onHeaderCell: () => ({ style: { height: "50px", width: "10px" } }),
       onCell: () => ({ style: { height: "50px", width: "10px" } }),
-      render: (_value: any, record: ProductResultDto) => {
+      render: (_value, record: ProductResultDto) => {
         return <p>{record.group}</p>;
       },
     },

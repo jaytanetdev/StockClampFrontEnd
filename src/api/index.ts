@@ -20,10 +20,11 @@ import {
 } from "@/constants/request-header.constant";
 // Define the structure of a retry queue item
 interface RetryQueueItem {
-  resolve: (value?: any) => void;
-  reject: (error?: any) => void;
+  resolve: (value: AxiosResponse) => void;
+  reject: (error?: unknown) => void;
   config: InternalAxiosRequestConfig | undefined;
 }
+
 
 export class CustomAxios extends BaseHttpRequest {
   private readonly initId = uuid();
@@ -66,6 +67,7 @@ export class CustomAxios extends BaseHttpRequest {
   }
 
   private _requestInterceptor(that: CustomAxios) {
+    console.log(that)
     return function (config: InternalAxiosRequestConfig) {
       config.headers[CORRElATION_HEADER_NAME] = uuid();
       config.headers[TIMEZONE] =
@@ -75,12 +77,13 @@ export class CustomAxios extends BaseHttpRequest {
       return config;
     };
   }
-
   private _responseInterceptor(that: CustomAxios) {
+    console.log(that)
     return function (response: AxiosResponse) {
       return response;
     };
   }
+  
 
   private async _refreshToken() {
     window.location.href = "/login";
@@ -91,7 +94,7 @@ export class CustomAxios extends BaseHttpRequest {
       const originalRequest = error.config;
       console.log("[Authorized axios] error.response", error.response?.data);
       if (error?.response?.status === 401) {
-        const cause = (error?.response?.data as any)?.cause;
+        const cause = (error?.response?.data as { cause?: string })?.cause;
         if (cause === "TokenExpiredError" || cause === "JsonWebTokenError") {
           if (!that.isRefreshing) {
             that.isRefreshing = true;
@@ -114,7 +117,7 @@ export class CustomAxios extends BaseHttpRequest {
           }
           // that.isRefreshing = false
 
-          return new Promise<void>((resolve, reject) => {
+          return new Promise<AxiosResponse>((resolve, reject) => {
             that.refreshAndRetryQueue.push({
               config: originalRequest,
               resolve,
@@ -133,14 +136,16 @@ export class CustomAxios extends BaseHttpRequest {
   }
 
   private _publicInstanceErrorHandler(that: CustomAxios) {
+    console.log(that)
     return function (error: AxiosError) {
       console.log("[Public axios] error.response", error.response?.data);
       if (error?.response?.status === 401) {
         if (
           typeof window !== "undefined" &&
-          (error.response?.data as any)?.path?.startsWith(
+          (error.response?.data as { path?: string })?.path?.startsWith(
             "/api/v1/auth/refresh"
           )
+        
         ) {
           // const locale = extractPathnameAsList(window.location.pathname).at(0)
           // window.location.href = ${locale ? '/' + locale : ''}/login

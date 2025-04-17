@@ -10,7 +10,6 @@ import React, {
   useEffect,
 } from "react";
 import { redirect, usePathname } from "next/navigation";
-import { useLocalStorage } from "@uidotdev/usehooks";
 import apiClient from "@/api";
 import { GetUserResultDto } from "@/api/generated";
 type GlobalContextType = {
@@ -37,14 +36,15 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({
           try {
             const resonse = await apiClient.user.userControllerGetProfileV1();
             setUserProfile(resonse.result);
-          } catch (error) {
+          } catch {
             redirect("/login");
           }
         }
       }
     };
     fetchProfile();
-  }, [pathname]);
+  }, [pathname]); // ลบ userProfile ออกเพื่อป้องกัน infinite loop
+
   return (
     <GlobalContext.Provider value={{ isLoading, setIsLoading, userProfile }}>
       {children}

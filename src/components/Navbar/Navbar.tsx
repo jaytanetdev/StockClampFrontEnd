@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { ApiError, GetUserResultDto } from "@/api/generated";
+import { ApiError } from "@/api/generated";
 import apiClient from "@/api";
 import { useRouter } from "next/navigation";
 import { showNotification } from "@/utils/notification";

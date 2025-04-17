@@ -1,18 +1,13 @@
 "use client";
 
 import apiClient from "@/api";
-import {
-  GetOptionResponseDto,
-  GetOptionResultDto,
-  GetOrderResultDto,
-} from "@/api/generated";
+import { GetOrderResultDto } from "@/api/generated";
 import ButtonCustom from "@/components/Button/ButtonCustom";
 import TableCustom from "@/components/Table/TableCustomer";
 import ModalOrder from "@/modules/order/ModalOrder";
-import ModalProduct from "@/modules/product/ModalProduct";
 import { PlusOutlined } from "@ant-design/icons";
 import { Skeleton, TableProps } from "antd";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState } from "react";
 
 export default function OrderPage() {
   const defaulPage = { page: 1, pageSize: 10 };
@@ -41,7 +36,7 @@ export default function OrderPage() {
       setLoadingOrder(false);
     };
     fetchOrder();
-  }, []);
+  }, [defaulPage.page, defaulPage.pageSize]);
 
   const columns: TableProps<GetOrderResultDto>["columns"] = [
     {
@@ -51,7 +46,7 @@ export default function OrderPage() {
       align: "center",
       onHeaderCell: () => ({ style: { height: "50px", width: "10px" } }),
       onCell: () => ({ style: { height: "50px", width: "10px" } }),
-      render: (_value: any, record: GetOrderResultDto, index: number) => {
+      render: (_value: unknown, record: GetOrderResultDto, index: number) => {
         return (
           <p>{index + 1 + (pagination.current - 1) * pagination.pageSize}</p>
         );
@@ -63,7 +58,7 @@ export default function OrderPage() {
       key: "_id",
       onHeaderCell: () => ({ style: { height: "50px", width: "20px" } }),
       onCell: () => ({ style: { height: "50px", width: "20px" } }),
-      render: (_value: any, record: GetOrderResultDto) => {
+      render: (_value: unknown, record: GetOrderResultDto) => {
         return <p>{record?._id??111}</p>;
       },
     },
@@ -117,7 +112,7 @@ export default function OrderPage() {
 
       onHeaderCell: () => ({ style: { height: "50px", width: "20px" } }),
       onCell: () => ({ style: { height: "50px", width: "20px" } }),
-      render: (_value: any, record: GetOrderResultDto) => {
+      render: (_value: unknown, record: GetOrderResultDto) => {
         return (
           <div className="flex items-center justify-center h-[50px] pt-5">
             <ButtonCustom
