@@ -37,6 +37,7 @@ export class CustomAxios extends BaseHttpRequest {
     },
   });
   private readonly axiosAuthorizedInstance = axios.create({
+    withCredentials: true, 
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json; charset=utf-8",
