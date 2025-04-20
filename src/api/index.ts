@@ -4,12 +4,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 import { v4 as uuid } from "uuid";
-import {
-  ApiClient,
-  BaseHttpRequest,
-  CancelablePromise,
-  OpenAPIConfig,
-} from "./generated";
+
 import { ApiRequestOptions } from "./generated/core/ApiRequestOptions";
 import { request as __request } from "./generated/core/request";
 import {
@@ -18,6 +13,7 @@ import {
   LOCALE,
   TIMEZONE,
 } from "@/constants/request-header.constant";
+import { ApiClient, BaseHttpRequest, CancelablePromise, OpenAPIConfig } from "./generated/index";
 // Define the structure of a retry queue item
 interface RetryQueueItem {
   resolve: (value: AxiosResponse) => void;
