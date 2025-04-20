@@ -49,7 +49,6 @@ const ModalOrder = (prop: ModalOrderType) => {
   }, [prop.isModalOpen]);
 
   const handleOk = async (data: CreateOrderDto) => {
-    console.log(data);
 
     try {
       const res = await apiClient.order.orderControllerCreateV1({

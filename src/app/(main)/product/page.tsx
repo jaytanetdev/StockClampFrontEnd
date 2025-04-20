@@ -9,13 +9,10 @@ import ModalProduct from "@/modules/product/ModalProduct";
 import {
   DeleteFilled,
   EditFilled,
-  EditOutlined,
   PlusOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
 import { Skeleton, TableProps } from "antd";
-import { Edit } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function ProductPage() {
@@ -76,7 +73,7 @@ export default function ProductPage() {
       onCell: () => ({
         style: { ...defualCell, height: "50px", width: "10px" },
       }),
-      render: (_value, record: ProductResultDto, index: number) => {
+      render: (_value, _record: ProductResultDto, index: number) => {
         return (
           <p>{index + 1 + (pagination.current - 1) * pagination.pageSize}</p>
         );
@@ -149,7 +146,7 @@ export default function ProductPage() {
       onCell: () => ({
         style: { ...defualCell, height: "20px", width: "20px" },
       }),
-      render: (_value, record: ProductResultDto) => {
+      render: () => {
         return (
           <div className="flex gap-[2px] items-center justify-center">
             <ButtonCustom className="bg-[#41B3FF] rounded-md w-[30px] h-[30px]">
@@ -183,9 +180,12 @@ export default function ProductPage() {
       ) : (
         <>
           <div className="text-center ">
-           
-              <InputCustom  placeholder="Search something here" name="search" className={"w-[258px] h-[33px]"} prefix={<SearchOutlined />} />
-          
+            <InputCustom
+              placeholder="Search something here"
+              name="search"
+              className={"w-[258px] h-[33px]"}
+              prefix={<SearchOutlined />}
+            />
           </div>
 
           <div className="text-end  pb-1 ">

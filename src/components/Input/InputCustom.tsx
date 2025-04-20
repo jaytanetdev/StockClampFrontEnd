@@ -1,7 +1,7 @@
 import { Form, Input, FormItemProps, InputProps } from "antd";
 
 interface InputCustomProps extends InputProps {
-  label: string;
+  label?: string;
   name: string;
   formItemProps?: FormItemProps;
   classLabel?: string;
