@@ -53,42 +53,7 @@ export default function OrderPage() {
       },
     },
     {
-      title: "_id",
-      dataIndex: "_id",
-      key: "_id",
-      onHeaderCell: () => ({ style: { height: "50px", width: "20px" } }),
-      onCell: () => ({ style: { height: "50px", width: "20px" } }),
-      render: (_value: unknown, record: GetOrderResultDto) => {
-        return <p>{record?._id??111}</p>;
-      },
-    },
-    {
-      title: "Cost",
-      dataIndex: "cost",
-      key: "cost",
-      align: "center",
-      onHeaderCell: () => ({ style: { height: "50px", width: "50px" } }),
-      onCell: () => ({ style: { height: "50px", width: "50px" } }),
-    },
-    {
-      title: "Selling Price",
-      dataIndex: "sellingPrice",
-      key: "sellingPrice",
-      align: "center",
-      onHeaderCell: () => ({ style: { height: "50px", width: "20px" } }),
-      onCell: () => ({ style: { height: "50px", width: "20px" } }),
-    },
-    {
-      title: "Expenses",
-      dataIndex: "expenses",
-      key: "expenses",
-      align: "center",
-
-      onHeaderCell: () => ({ style: { height: "50px", width: "50px" } }),
-      onCell: () => ({ style: { height: "50px", width: "50px" } }),
-    },
-    {
-      title: "Profit",
+      title: "Net Profit",
       dataIndex: "profit",
       key: "profit",
       align: "center",
@@ -154,7 +119,7 @@ export default function OrderPage() {
             </ButtonCustom>
           </div>
           <TableCustom<GetOrderResultDto>
-           rowKey={(record) => record?._id ?? `temp_${Math.random()}`}
+            rowKey={(record) => record?._id ?? `temp_${Math.random()}`}
             dataSource={dataOrder}
             columns={columns}
             dataPage={{

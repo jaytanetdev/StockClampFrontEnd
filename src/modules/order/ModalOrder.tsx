@@ -49,15 +49,17 @@ const ModalOrder = (prop: ModalOrderType) => {
   }, [prop.isModalOpen]);
 
   const handleOk = async (data: CreateOrderDto) => {
+    console.log(data);
+
     try {
       const res = await apiClient.order.orderControllerCreateV1({
         productId: data.productId,
         amount: data.amount,
-        status: data.status,
-        cost: data.cost,
-        sellingPrice: data.sellingPrice,
-        expenses: data.expenses,
-        profit: data.profit,
+        status: CreateOrderDto.status.OPEN,
+        cost: 11,
+        sellingPrice: 22,
+        expenses: 33,
+        profit: 44,
       });
       console.log("res", res);
       prop?.setDataOrder((prev) => [...prev, res]);
@@ -121,7 +123,7 @@ const ModalOrder = (prop: ModalOrderType) => {
         amount: 1,
       });
       handleChangeAmount(1);
-    }else{
+    } else {
       const amount = form.getFieldValue("amount");
       handleChangeAmount(amount);
     }
@@ -132,6 +134,12 @@ const ModalOrder = (prop: ModalOrderType) => {
     const expenses = value * costEA;
     const profit = value * sellingPriceEA - value * costEA;
     form.setFieldsValue({
+      costNet: expenses,
+      sellingPriceNet: value * sellingPriceEA,
+      expenses: expenses,
+      profit: profit,
+    });
+    console.log({
       costNet: expenses,
       sellingPriceNet: value * sellingPriceEA,
       expenses: expenses,
@@ -166,126 +174,141 @@ const ModalOrder = (prop: ModalOrderType) => {
           }
         }}
       >
-        <div className="flex gap-2">
-          {dataMaterial?.map((item, index) => (
-            <div key={index}>
-              <ButtonCustom
-                type="primary"
-                className={`border border-blue-950 ${
-                  activeMaterial === item._id
-                    ? "bg-blue-950 text-white "
-                    : "bg-white text-blue-950"
-                }`}
-                onClick={() => handleMaterial(item._id)}
-              >
-                {item.materialName}
-              </ButtonCustom>
+        <div className="border px-2 py-1 rounded-lg">
+          <div className="flex flex-col items-center justify-center gap-2 py-2 ">
+            <div className="grid grid-cols-2 gap-2">
+              {dataMaterial?.map((item1, index) => (
+                <div key={index}>
+                  <ButtonCustom
+                    type="primary"
+                    className={`border border-blue-950 w-full ${
+                      activeMaterial === item1._id
+                        ? "bg-blue-950 text-white "
+                        : "bg-white text-blue-950"
+                    }`}
+                    onClick={() => handleMaterial(item1._id)}
+                  >
+                    {item1.materialName}
+                  </ButtonCustom>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <div className="flex gap-2">
-          {dataModel?.map((item, index) => (
-            <div key={index}>
-              <ButtonCustom
-                type="primary"
-                className={`border border-blue-950 ${
-                  activeModel === item._id
-                    ? "bg-red-700 text-white "
-                    : "bg-white text-blue-950"
-                }`}
-                onClick={() => handleModel(item._id)}
-              >
-                {item.modelName}
-              </ButtonCustom>
+            <div className="grid grid-cols-3 gap-2">
+              {dataModel?.map((item2, index) => (
+                <div key={index}>
+                  <ButtonCustom
+                    type="primary"
+                    className={`border border-blue-950 w-full ${
+                      activeModel === item2._id
+                        ? "bg-blue-950 text-white "
+                        : "bg-white text-blue-950"
+                    }`}
+                    onClick={() => handleModel(item2._id)}
+                  >
+                    {item2.modelName}
+                  </ButtonCustom>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <div className="flex gap-2">
-          {dataOption?.map((item, index) => (
-            <div key={index}>
-              <ButtonCustom
-                type="primary"
-                className={`border border-blue-950 ${
-                  activeOption === item._id
-                    ? "bg-green-700 text-white "
-                    : "bg-white text-blue-950"
-                }`}
-                onClick={() => handleOption(item._id)}
-              >
-                {item.optionName}
-              </ButtonCustom>
+            <div className="grid grid-cols-3 gap-2">
+              {dataOption?.map((item3, index) => (
+                <div key={index}>
+                  <ButtonCustom
+                    type="primary"
+                    className={`border border-blue-950  w-full ${
+                      activeOption === item3._id
+                        ? "bg-blue-950 text-white "
+                        : "bg-white text-blue-950"
+                    }`}
+                    onClick={() => handleOption(item3._id)}
+                  >
+                    {item3.optionName}
+                  </ButtonCustom>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+          <div className="border px-3 py-3 my-5 rounded-lg">
+            <SelectCustom
+              label="Product"
+              name="productId"
+              placeholder="Product"
+              onChange={handleProduct}
+              options={(dataProduct || []).map((item) => ({
+                label: `${item.productName}`,
+                value: item._id,
+              }))}
+              formItemProps={{
+                rules: [{ required: true, message: "Please select product" }],
+              }}
+            />
+            <InputCustom
+              label="Amount"
+              name="amount"
+              type="number"
+              placeholder="amount"
+              formItemProps={{
+                rules: [{ required: true, message: "Please input amount " }],
+              }}
+            />
+            <div className="flex gap-2">
+              <InputCustom
+                label="Cost 1 (EA)"
+                name="costEA"
+                placeholder="costEA"
+                type="number"
+                formItemProps={{
+                  rules: [
+                    { required: true, message: "Please input cost (EA)" },
+                  ],
+                }}
+              />
+              <InputCustom
+                label="Cost (Net)"
+                name="costNet"
+                placeholder="cost"
+                className="bg-red-700 text-white  hover:bg-red-700 focus:bg-red-700 placeholder:text-gray-300"
+                type="number"
+                formItemProps={{
+                  rules: [
+                    { required: true, message: "Please input cost (Net)" },
+                  ],
+                }}
+              />
+            </div>
+            <div className="flex gap-2">
+              <InputCustom
+                label="Selling Price 1 (EA)"
+                name="sellingPriceEA"
+                type="number"
+                placeholder="selling price EA"
+                formItemProps={{
+                  rules: [
+                    {
+                      required: true,
+                      message: "Please input selling price (EA)",
+                    },
+                  ],
+                }}
+              />
+              <InputCustom
+                label="Selling Price (Net)"
+                name="sellingPriceNet"
+                type="number"
+                className="bg-green-700 text-white hover:bg-green-700 focus:bg-green-700  placeholder:text-gray-300"
+                placeholder="selling price "
+                formItemProps={{
+                  rules: [
+                    {
+                      required: true,
+                      message: "Please input selling price (Net)",
+                    },
+                  ],
+                }}
+              />
+            </div>
+          </div>
         </div>
-        <SelectCustom
-          label="Product"
-          name="product"
-          placeholder="Product"
-          onChange={handleProduct}
-          options={(dataProduct || []).map((item) => ({
-            label: `${item.productName}`,
-            value: item._id,
-          }))}
-          formItemProps={{
-            rules: [{ required: true, message: "Please select product" }],
-          }}
-        />
-        <InputCustom
-          label="Amount"
-          name="amount"
-          type="number"
-          placeholder="amount"
-          formItemProps={{
-            rules: [{ required: true, message: "Please input amount " }],
-          }}
-        />
-        <div className="flex gap-2">
-          <InputCustom
-            label="Cost 1 (EA)"
-            name="costEA"
-            placeholder="costEA"
-            type="number"
-            formItemProps={{
-              rules: [{ required: true, message: "Please input cost (EA)" }],
-            }}
-          />
-          <InputCustom
-            label="Cost (Net)"
-            name="costNet"
-            placeholder="cost"
-            className="bg-red-700 text-white  hover:bg-red-700 focus:bg-red-700 placeholder:text-gray-300"
-            type="number"
-            formItemProps={{
-              rules: [{ required: true, message: "Please input cost (Net)" }],
-            }}
-          />
-        </div>
-        <div className="flex gap-2">
-          <InputCustom
-            label="Selling Price 1 (EA)"
-            name="sellingPriceEA"
-            type="number"
-            placeholder="selling price EA"
-            formItemProps={{
-              rules: [
-                { required: true, message: "Please input selling price (EA)" },
-              ],
-            }}
-          />
-          <InputCustom
-            label="Selling Price (Net)"
-            name="sellingPriceNet"
-            type="number"
-            className="bg-green-700 text-white hover:bg-green-700 focus:bg-green-700  placeholder:text-gray-300"
-            placeholder="selling price "
-            formItemProps={{
-              rules: [
-                { required: true, message: "Please input selling price (Net)" },
-              ],
-            }}
-          />
-        </div>
-
         {/* <InputCustom
           label="Status"
           name="status"

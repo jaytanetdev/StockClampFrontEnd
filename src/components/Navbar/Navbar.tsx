@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { showNotification } from "@/utils/notification";
 import { LogoutOutlined } from "@ant-design/icons";
 import { useGlobalContext } from "@/contexts/GlobalContext";
+import Image from "next/image";
 
 const Navbar = () => {
   const router = useRouter();
@@ -24,11 +25,21 @@ const Navbar = () => {
   };
   return (
     <nav className="w-full">
-      <div className="flex items-center justify-end  border-b-2 border-blue-950 h-[80px]   text-blue-950 px-4 gap-2">
-        <p className="font-semibold">
-          {userProfile?.firstName} {userProfile?.lastName}
+      <div className="flex items-end pb-[9px] sm:pb-0 sm:items-center justify-center  border-b-2 border-blue-950 h-[88px] sm:bg-white bg-blue-950 sm:text-blue-950 text-white px-4 gap-2 relative">
+        <p className="font-bold text-xl ">
+          {/* {userProfile?.firstName} {userProfile?.lastName} */}
+          {" JTL.Hydraulic"}
         </p>
-        <LogoutOutlined onClick={handlelogout} className="text-red-600" />
+        <div className="absolute right-4 top-1/2 -translate-y-1/2">
+          <Image
+            src={userProfile?.picture ?? "/default-avatar.png"}
+            className=" rounded-full"
+            width={40}
+            height={40}
+            alt="User profile picture"
+          />
+        </div>
+        {/* <LogoutOutlined onClick={handlelogout} className="text-red-600" /> */}
       </div>
     </nav>
   );

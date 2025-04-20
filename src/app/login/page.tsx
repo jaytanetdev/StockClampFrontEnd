@@ -23,7 +23,7 @@ export default function LoginUI() {
             width={128}
             height={128}
           />
-          <span className="text-3xl font-semibold text-black ">
+          <span className="text-2xl font-semibold text-black text-center">
             Login to JTL.Hydraulic
           </span>
 

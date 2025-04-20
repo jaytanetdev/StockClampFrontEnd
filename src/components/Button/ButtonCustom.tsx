@@ -2,19 +2,22 @@ import { Button, ButtonProps, Form } from "antd";
 
 interface ButtonCustomProps extends ButtonProps {
   children?: React.ReactNode;
+  classNameBtn?: string;
 }
-const ButtonCustom = ({ children, ...rest }: ButtonCustomProps) => {
+const ButtonCustom = ({
+  children,
+  classNameBtn,
+  ...rest
+}: ButtonCustomProps) => {
   return (
-      <Form.Item>
-        <Button
-          className={`bg-[#1A237E]  border-[#1A237E] text-white font-semibold rounded-lg px-4 ${
-            rest.className ?? ""
-          }`}
-          {...rest}
-        >
-          {children}
-        </Button>
-      </Form.Item>
+    <Form.Item className="m-0">
+      <Button
+        className={`bg-blue-950  border-[#1A237E] text-white font-semibold rounded-lg px-4 ${classNameBtn}`}
+        {...rest}
+      >
+        {children}
+      </Button>
+    </Form.Item>
   );
 };
 

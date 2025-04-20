@@ -47,24 +47,23 @@ export class CustomAxios extends BaseHttpRequest {
   constructor(config: OpenAPIConfig) {
     super(config);
     this.axiosPublicInstance.interceptors.request.use(
-      this._requestInterceptor(this)
+      this._requestInterceptor()
     );
     this.axiosPublicInstance.interceptors.response.use(
-      this._responseInterceptor(this),
-      this._publicInstanceErrorHandler(this)
+      this._responseInterceptor(),
+      this._publicInstanceErrorHandler()
     );
 
     this.axiosAuthorizedInstance.interceptors.request.use(
-      this._requestInterceptor(this)
+      this._requestInterceptor()
     );
     this.axiosAuthorizedInstance.interceptors.response.use(
-      this._responseInterceptor(this),
+      this._responseInterceptor(),
       this._authorizedInstanceErrorHandler(this)
     );
   }
 
-  private _requestInterceptor(that: CustomAxios) {
-    console.log(that)
+  private _requestInterceptor() {
     return function (config: InternalAxiosRequestConfig) {
       config.headers[CORRElATION_HEADER_NAME] = uuid();
       config.headers[TIMEZONE] =
@@ -74,8 +73,7 @@ export class CustomAxios extends BaseHttpRequest {
       return config;
     };
   }
-  private _responseInterceptor(that: CustomAxios) {
-    console.log(that)
+  private _responseInterceptor() {
     return function (response: AxiosResponse) {
       return response;
     };
@@ -132,8 +130,7 @@ export class CustomAxios extends BaseHttpRequest {
     };
   }
 
-  private _publicInstanceErrorHandler(that: CustomAxios) {
-    console.log(that)
+  private _publicInstanceErrorHandler() {
     return function (error: AxiosError) {
       console.log("[Public axios] error.response", error.response?.data);
       if (error?.response?.status === 401) {

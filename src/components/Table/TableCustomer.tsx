@@ -18,7 +18,7 @@ function TableCustom<T extends object>({
 }: TableCustomProps<T>) {
   const [pagination, setPageination] = useState({
     current: dataPage?.current ?? 1,
-    pageSize: dataPage?.pageSize ?? 10,
+    pageSize: dataPage?.pageSize ?? 5,
     total: dataPage?.total ?? rest?.dataSource?.length,
   });
 
@@ -38,11 +38,8 @@ function TableCustom<T extends object>({
   };
   return (
     <div className=" shadow-lg">
-      <Table
-        pagination={false}
-        {...rest}
-      />
-      <div className="flex justify-end py-4">
+      <Table pagination={false} {...rest} />
+      <div className="flex justify-center  sm:justify-end py-4">
         <Pagination
           total={pagination.total}
           current={pagination.current}
@@ -53,6 +50,6 @@ function TableCustom<T extends object>({
       </div>
     </div>
   );
-};
+}
 
 export default TableCustom;

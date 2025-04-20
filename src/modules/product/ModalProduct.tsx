@@ -34,7 +34,7 @@ const ModalProduct = (prop: ModalProductType) => {
         optionId: data.optionId,
       });
       prop?.setDataProduct((prev) => [...prev, res.result]);
-      showNotification("success", "Success", 'บันทึกสินค้าสำเร็จ');
+      showNotification("success", "Success", "บันทึกสินค้าสำเร็จ");
     } catch (e) {
       if (e instanceof ApiError) {
         showNotification("error", "Error", e.body?.message);
@@ -50,61 +50,69 @@ const ModalProduct = (prop: ModalProductType) => {
       handleCancel={prop.handleCancel}
     >
       <Form layout="vertical" onFinish={handleOk} form={form}>
-        <SelectCustom
-          label="Option"
-          name="optionId"
-          placeholder="option"
-          options={(prop?.dataOption || []).map((item) => ({
-            label: `${item.modelId?.materialId.materialName} - ${item.optionName} - ${item.modelId?.modelName}`,
-            value: item._id,
-          }))}
-          formItemProps={{
-            rules: [{ required: true, message: "Please select option" }],
-          }}
-        />
+        <div className="border w-full py-10 px-5">
+          <SelectCustom
+            label="Option"
+            name="optionId"
+            placeholder="option"
+            options={(prop?.dataOption || []).map((item) => ({
+              label: `${item.modelId?.materialId.materialName} - ${item.optionName} - ${item.modelId?.modelName}`,
+              value: item._id,
+            }))}
+            formItemProps={{
+              rules: [{ required: true, message: "Please select option" }],
+            }}
+          />
 
-        <InputCustom
-          label="Product Name"
-          name="productName"
-          placeholder="product name"
-          formItemProps={{
-            rules: [{ required: true, message: "Please input product name" }],
-          }}
-        />
-        <InputCustom
-          label="Group"
-          name="group"
-          placeholder="group"
-          formItemProps={{
-            rules: [{ required: true, message: "Please input group" }],
-          }}
-        />
-        <InputCustom
-          label="Size"
-          name="size"
-          placeholder="size"
-          formItemProps={{
-            rules: [{ required: true, message: "Please input size" }],
-          }}
-        />
-        <InputCustom
-          label="Cost"
-          name="cost"
-          placeholder="cost"
-          type="number"
-          formItemProps={{
-            rules: [{ required: true, message: "Please input cost" }],
-          }}
-        />
-        <InputCustom
-          label="Selling Price"
-          name="sellingPrice"
-          type="number"
-          placeholder="selling price"
-          formItemProps={{
-            rules: [{ required: true, message: "Please input selling price" }],
-          }}
-        />
+          <InputCustom
+            label="Product Name"
+            name="productName"
+            placeholder="product name"
+            formItemProps={{
+              rules: [{ required: true, message: "Please input product name" }],
+            }}
+          />
+          <InputCustom
+            label="Group"
+            name="group"
+            placeholder="group"
+            formItemProps={{
+              rules: [{ required: true, message: "Please input group" }],
+            }}
+          />
+          <InputCustom
+            label="Size"
+            name="size"
+            placeholder="size"
+            formItemProps={{
+              rules: [{ required: true, message: "Please input size" }],
+            }}
+          />
+          <InputCustom
+            label="Cost"
+            name="cost"
+            placeholder="cost"
+            type="number"
+            addonAfter={<span >Bath</span>}
+            className="w-full"
+            formItemProps={{
+              rules: [{ required: true, message: "Please input cost" }],
+            }}
+          />
+          <InputCustom
+            label="Selling Price"
+            name="sellingPrice"
+            type="number"
+            placeholder="selling price"
+            addonAfter={<span >Bath</span>}
+            className="w-full"
+            formItemProps={{
+              rules: [
+                { required: true, message: "Please input selling price" },
+              ],
+            }}
+          />
+        </div>
       </Form>
     </ModalCustom>
   );
