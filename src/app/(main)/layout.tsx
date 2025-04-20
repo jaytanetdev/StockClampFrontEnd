@@ -13,7 +13,7 @@ const ClientLayout = ({ children }: { children: React.ReactNode }) => {
         <SideBar />
         <div className="flex flex-col w-full  min-h-screen ">
           <Navbar />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1  border-[15px] ">{children}</main>
             <Footer />
         </div>
       </div>

@@ -12,7 +12,7 @@ import {
   PlusOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import { Skeleton, TableProps } from "antd";
+import { Form, Skeleton, TableProps } from "antd";
 import { useEffect, useState } from "react";
 
 export default function ProductPage() {
@@ -79,7 +79,6 @@ export default function ProductPage() {
         );
       },
     },
-
     {
       title: "Product Name",
       dataIndex: "productName",
@@ -174,42 +173,46 @@ export default function ProductPage() {
   };
 
   return (
-    <div className="overflow-hidden px-[15px] sm:px-10 py-12  ">
+    <div className="overflow-hidden  ">
       {loadingProduct || loadingOption ? (
         <Skeleton active />
       ) : (
         <>
-          <div className="text-center ">
-            <InputCustom
-              placeholder="Search something here"
-              name="search"
-              className={"w-[258px] h-[33px]"}
-              prefix={<SearchOutlined />}
+          <Form>
+            <div className="text-center border-b-[10px] pt-7">
+              <InputCustom
+                placeholder="Search something here"
+                name="search"
+                className={"w-[258px] h-[33px]"}
+                prefix={<SearchOutlined />}
+              />
+            </div>
+
+            <div className="text-end  pb-1 pt-[17px] px-5">
+              <span>
+                <ButtonCustom
+                  onClick={() => setIsModalOpen(true)}
+                  classNameBtn="h-[40px]"
+                >
+                  <PlusOutlined className="w-[15px] h-[15px]" />
+                  Add Product
+                </ButtonCustom>
+              </span>
+            </div>
+          </Form>
+          <div className="px-5">
+            <TableCustom<ProductResultDto>
+              rowKey={(record) => record._id}
+              dataSource={dataProduct}
+              columns={columns}
+              dataPage={{
+                total: pagination.total,
+                current: pagination.current,
+                pageSize: pagination.pageSize,
+              }}
+              onPageChange={handlePageChange}
             />
           </div>
-
-          <div className="text-end  pb-1 ">
-            <span>
-              <ButtonCustom
-                onClick={() => setIsModalOpen(true)}
-                classNameBtn="h-[40px]"
-              >
-                <PlusOutlined className="w-[15px] h-[15px]" />
-                Add Product
-              </ButtonCustom>
-            </span>
-          </div>
-          <TableCustom<ProductResultDto>
-            rowKey={(record) => record._id}
-            dataSource={dataProduct}
-            columns={columns}
-            dataPage={{
-              total: pagination.total,
-              current: pagination.current,
-              pageSize: pagination.pageSize,
-            }}
-            onPageChange={handlePageChange}
-          />
           <ModalProduct
             handleCancel={() => setIsModalOpen(false)}
             dataOption={dataOption}

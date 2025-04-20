@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 
+
 :where(.ant-pagination) .ant-pagination-item-active {
     background-color: #1e3a8a !important; /* bg-blue-950 */
     border-color: #1e3a8a !important;
@@ -13,4 +14,9 @@
   }
  .ant-pagination-item-link{
     border: 2px !important;
+  }
+
+
+  html, body {
+    font-family: 'var(--font-sarabun-sans)', sans-serif;
   }
