@@ -34,7 +34,7 @@ const Footer = () => {
 
   return (
     <footer className="w-full block sm:hidden">
-      <div className="bg-blue-950 flex justify-around items-center h-[104px] w-full">
+      <div className="bg-blue-950 flex justify-around items-center h-[104px] w-full  px-2">
         {menu.map((item, index) => {
           return (
             <div key={index}>
