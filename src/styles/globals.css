@@ -2,21 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 :where(.ant-pagination) .ant-pagination-item-active {
-    background-color: #1e3a8a !important; /* bg-blue-950 */
-    border-color: #1e3a8a !important;
-  }
-  
-  :where(.ant-pagination) .ant-pagination-item-active a {
-    color: white !important;
-  }
- .ant-pagination-item-link{
-    border: 2px !important;
-  }
+  background-color: #1e3a8a !important; /* bg-blue-950 */
+  border-color: #1e3a8a !important;
+}
 
+:where(.ant-pagination) .ant-pagination-item-active a {
+  color: white !important;
+}
+.ant-pagination-item-link {
+  border: 2px !important;
+}
 
-  html, body {
-    font-family: 'var(--font-sarabun-sans)', sans-serif;
-  }
+html,
+body {
+  font-family: "var(--font-sarabun-sans)", sans-serif;
+}
+
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+.ant-input {
+  font-size: 16px;
+}
