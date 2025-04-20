@@ -1,7 +1,88 @@
 "use client";
+import React from "react";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+import { Form } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import RangePickerCustom from "@/components/Date/RangePickerCustom";
 
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
 
+const Dashboard = () => {
+  const labels = ["Shopee", "Lazada", "Other"];
+  const datasets = [820, 600, 700];
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        // Title of Graph
+        label: "Profit",
+        data: datasets,
+        backgroundColor: ["#FF6633", "#0D1274", "#6E6E6E"],
+        borderColor: ["#FF6633", "#0D1274", "#6E6E6E"],
+        borderWidth: 1,
+        barPercentage: 1,
+        borderRadius: {
+          topLeft: 5,
+          topRight: 5,
+        },
+        barThickness: 40, // ✅ กำหนดความหนาแท่ง (px)
+        categoryPercentage: 0.6,
+      },
+    ],
+  };
+  const options = {
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        title: {
+          display: true,
+        },
+        display: true,
+        beginAtZero: true,
+      },
+      x: {
+        title: {
+          display: true,
+        },
+        display: true,
+      },
+    },
+  };
+  return (
+    <div className="w-full flex-col flex  h-full">
+      <Form>
+        <div className="text-center border-b-[10px] pt-7 w-full">
+          <RangePickerCustom
+            name="search"
+            prefix={<SearchOutlined />}
+          />
+        </div>
+      </Form>
+      <div className="flex items-center justify-center px-5 py-10 h-[500px]">
+        <Bar data={data} options={options} />
+      </div>
+    </div>
+  );
+};
 
-export default function DashboardPage() {
-  return <div className="flex items-center justify-center "></div>;
-}
+export default Dashboard;

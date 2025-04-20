@@ -31,7 +31,7 @@ const Navbar = () => {
         </p>
         <div className="absolute right-4 top-1/2 -translate-y-1/2">
           <Image
-            src={userProfile?.picture ?? "/default-avatar.png"}
+            src={userProfile?.picture ?? "/icon/profile-user.png"}
             className=" rounded-full"
             width={40}
             height={40}

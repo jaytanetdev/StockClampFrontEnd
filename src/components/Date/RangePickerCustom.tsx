@@ -1,8 +1,8 @@
-import { DatePicker,  Form, FormItemProps } from "antd";
-import { RangePickerProps} from "antd/es/date-picker";
+import { DatePicker, Form, FormItemProps } from "antd";
+import { RangePickerProps } from "antd/es/date-picker";
 
 interface RangePickerCustomProps extends RangePickerProps {
-  label: string;
+  label?: string;
   formItemProps?: FormItemProps;
   name: string;
 }
@@ -16,7 +16,7 @@ const RangePickerCustom = ({
 }: RangePickerCustomProps) => {
   return (
     <Form.Item
-      label={<span className=" text-white">{label}</span>}
+      label={label && <span className=" text-white">{label}</span>}
       name={name}
       validateTrigger={["onChange", "onBlur"]}
       {...formItemProps}

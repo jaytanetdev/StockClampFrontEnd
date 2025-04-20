@@ -175,7 +175,7 @@ export default function ProductPage() {
   return (
     <div className="overflow-hidden  ">
       {loadingProduct || loadingOption ? (
-        <Skeleton active />
+        <Skeleton active className="p-5" />
       ) : (
         <>
           <Form>
