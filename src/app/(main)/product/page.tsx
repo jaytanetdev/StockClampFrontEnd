@@ -12,47 +12,50 @@ import {
   PlusOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import { Form, Skeleton, TableProps } from "antd";
-import { useEffect, useState } from "react";
+import { Form,  TableProps } from "antd";
+import { useEffect, useState, useTransition } from "react";
 
+type SearchProductType = {
+  page?: number;
+  pageSize?: number;
+};
 export default function ProductPage() {
   const defaulPage = { page: 1, pageSize: 5 };
-  const [pagination, sePagination] = useState({
+  const [pagination, setPagination] = useState({
     current: defaulPage.page,
     pageSize: defaulPage.pageSize,
-    total: 5,
+    total: 0,
   });
   const [dataProduct, setDataProduct] = useState<ProductResultDto[]>([]);
   const [dataOption, setDataOption] = useState<GetOptionResultDto[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [loadingProduct, setLoadingProduct] = useState(true);
-  const [loadingOption, setLoadingOption] = useState(true);
+  const [PendingProduct, startFetchProduct] = useTransition();
+  const [PendingOption, startFetchOption] = useTransition();
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      setLoadingProduct(true);
-      const resProduct = await apiClient.product.productControllerFindAllV1(
-        defaulPage.page,
-        defaulPage.pageSize
-      );
-      setDataProduct(resProduct.result);
-      sePagination({
-        current: defaulPage.page,
-        pageSize: defaulPage.pageSize,
-        total: resProduct.total,
-      });
-      setLoadingProduct(false);
-    };
-    fetchProduct();
+    startFetchProduct(async () => {
+      await fetchProduct(defaulPage);
+    });
 
-    const fetchOption = async () => {
-      setLoadingOption(true);
-      const resOption = await apiClient.option.optionControllerFindAllV1();
-      setDataOption(resOption.result);
-      setLoadingOption(false);
-    };
-    fetchOption();
+    startFetchOption(fetchOption);
   }, []);
+
+  const fetchProduct = async ({ page, pageSize }: SearchProductType) => {
+    const resProduct = await apiClient.product.productControllerFindAllV1(
+      page || defaulPage.page,
+      pageSize || defaulPage.pageSize
+    );
+    setDataProduct(resProduct.result);
+    setPagination({
+      current: page || defaulPage.page,
+      pageSize: pageSize || defaulPage.pageSize,
+      total: resProduct.total,
+    });
+  };
+  const fetchOption = async () => {
+    const resOption = await apiClient.option.optionControllerFindAllV1();
+    setDataOption(resOption.result);
+  };
   const defualHeader = {
     backgroundColor: "#172554",
     color: "white",
@@ -61,7 +64,6 @@ export default function ProductPage() {
   const defualCell = {
     fontSize: "12px",
   };
-
   const columns: TableProps<ProductResultDto>["columns"] = [
     {
       title: "No.",
@@ -160,67 +162,57 @@ export default function ProductPage() {
     },
   ];
   const handlePageChange = async (page: number, pageSize: number) => {
-    const resProduct = await apiClient.product.productControllerFindAllV1(
-      page,
-      pageSize
-    );
-    setDataProduct(resProduct.result);
-    sePagination({
-      current: page,
-      pageSize: pageSize,
-      total: resProduct.total,
+    startFetchProduct(async () => {
+      await fetchProduct({ page, pageSize });
     });
   };
 
   return (
     <div className="overflow-hidden  ">
-      {loadingProduct || loadingOption ? (
-        <Skeleton active className="p-5" />
-      ) : (
-        <>
-          <Form>
-            <div className="text-center border-b-[10px] pt-7">
-              <InputCustom
-                placeholder="Search something here"
-                name="search"
-                className={"w-[258px] h-[33px]"}
-                prefix={<SearchOutlined />}
-              />
-            </div>
-
-            <div className="text-end  pb-1 pt-[17px] px-5">
-              <span>
-                <ButtonCustom
-                  onClick={() => setIsModalOpen(true)}
-                  classNameBtn="h-[40px]"
-                >
-                  <PlusOutlined className="w-[15px] h-[15px]" />
-                  Add Product
-                </ButtonCustom>
-              </span>
-            </div>
-          </Form>
-          <div className="px-5">
-            <TableCustom<ProductResultDto>
-              rowKey={(record) => record._id}
-              dataSource={dataProduct}
-              columns={columns}
-              dataPage={{
-                total: pagination.total,
-                current: pagination.current,
-                pageSize: pagination.pageSize,
-              }}
-              onPageChange={handlePageChange}
+      <>
+        <Form>
+          <div className="text-center border-b-[10px] pt-7">
+            <InputCustom
+              placeholder="Search something here"
+              name="search"
+              className={"w-[258px] h-[33px]"}
+              prefix={<SearchOutlined />}
             />
           </div>
-          <ModalProduct
-            handleCancel={() => setIsModalOpen(false)}
-            dataOption={dataOption}
-            isModalOpen={isModalOpen}
-            setDataProduct={setDataProduct}
+
+          <div className="text-end  pb-1 pt-[17px] px-5">
+            <span>
+              <ButtonCustom
+                onClick={() => setIsModalOpen(true)}
+                classNameBtn="h-[40px]"
+              >
+                <PlusOutlined className="w-[15px] h-[15px]" />
+                Add Product
+              </ButtonCustom>
+            </span>
+          </div>
+        </Form>
+        <div className="px-5">
+          <TableCustom<ProductResultDto>
+            loading={PendingProduct || PendingOption}
+            rowKey={(record) => record._id}
+            dataSource={dataProduct}
+            columns={columns}
+            dataPage={{
+              total: pagination.total,
+              current: pagination.current,
+              pageSize: pagination.pageSize,
+            }}
+            onPageChange={handlePageChange}
           />
-        </>
-      )}
+        </div>
+        <ModalProduct
+          handleCancel={() => setIsModalOpen(false)}
+          dataOption={dataOption}
+          isModalOpen={isModalOpen}
+          setDataProduct={setDataProduct}
+        />
+      </>
     </div>
   );
 }

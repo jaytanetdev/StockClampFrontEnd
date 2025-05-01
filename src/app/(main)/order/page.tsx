@@ -107,7 +107,7 @@ export default function OrderPage() {
   };
 
   return (
-    <div className="overflow-hidden  px-10 py-12  ">
+    <div className="  px-10 py-12 flex-col flex gap-2 ">
       {loadingOrder ? (
         <Skeleton active />
       ) : (

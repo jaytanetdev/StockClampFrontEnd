@@ -37,8 +37,8 @@ function TableCustom<T extends object>({
     onPageChange?.(page, pageSize);
   };
   return (
-    <div className=" shadow-lg">
-      <Table pagination={false} {...rest} />
+    <div className=" shadow-lg border rounded-xl">
+      <Table  pagination={false} {...rest} />
       <div className="flex justify-center  sm:justify-end py-4">
         <Pagination
           total={pagination.total}

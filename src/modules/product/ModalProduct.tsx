@@ -7,11 +7,12 @@ import {
   ProductResultDto,
 } from "@/api/generated";
 import InputCustom from "@/components/Input/InputCustom";
+import InputNumberCustom from "@/components/Input/InputNumberCustom";
 import ModalCustom from "@/components/Modal/ModalCustom";
 import SelectCustom from "@/components/Slect/SelectCustom";
 import { showNotification } from "@/utils/notification";
 import { Form } from "antd";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useTransition } from "react";
 
 type ModalProductType = {
   dataOption: GetOptionResultDto[];
@@ -21,25 +22,31 @@ type ModalProductType = {
 };
 
 const ModalProduct = (prop: ModalProductType) => {
+  const [pendingProduct, startFetchProduct] = useTransition();
   const [form] = Form.useForm();
 
   const handleOk = async (data: CreateProductDto) => {
-    try {
-      const res = await apiClient.product.productControllerCreateV1({
-        productName: data.productName,
-        size: data.size,
-        group: data.group,
-        cost: data.cost,
-        sellingPrice: data.sellingPrice,
-        optionId: data.optionId,
-      });
-      prop?.setDataProduct((prev) => [...prev, res.result]);
-      showNotification("success", "Success", "บันทึกสินค้าสำเร็จ");
-    } catch (e) {
-      if (e instanceof ApiError) {
-        showNotification("error", "Error", e.body?.message);
+    const submitProduct = async () => {
+      try {
+        const res = await apiClient.product.productControllerCreateV1({
+          productName: data.productName,
+          size: data.size,
+          group: data.group,
+          cost: data.cost,
+          sellingPrice: data.sellingPrice,
+          optionId: data.optionId,
+        });
+        prop?.setDataProduct((prev) => [...prev, res.result]);
+        showNotification("success", "Success", "บันทึกสินค้าสำเร็จ");
+      } catch (e) {
+        if (e instanceof ApiError) {
+          showNotification("error", "Error", e.body?.message);
+        }
       }
-    }
+    };
+    startFetchProduct(async () => {
+      await submitProduct();
+    });
   };
 
   return (
@@ -48,6 +55,8 @@ const ModalProduct = (prop: ModalProductType) => {
       isModalOpen={prop.isModalOpen}
       handleOk={() => form.submit()}
       handleCancel={prop.handleCancel}
+      confirmLoading={pendingProduct}
+      
     >
       <Form layout="vertical" onFinish={handleOk} form={form}>
         <div className="border w-full py-10 px-5">
@@ -88,23 +97,22 @@ const ModalProduct = (prop: ModalProductType) => {
               rules: [{ required: true, message: "Please input size" }],
             }}
           />
-          <InputCustom
+          <InputNumberCustom
             label="Cost"
             name="cost"
             placeholder="cost"
-            type="number"
-            addonAfter={<span >Bath</span>}
+            addonAfter={<span>Bath</span>}
             className="w-full"
             formItemProps={{
               rules: [{ required: true, message: "Please input cost" }],
             }}
           />
-          <InputCustom
+
+          <InputNumberCustom
             label="Selling Price"
             name="sellingPrice"
-            type="number"
             placeholder="selling price"
-            addonAfter={<span >Bath</span>}
+            addonAfter={<span>Bath</span>}
             className="w-full"
             formItemProps={{
               rules: [

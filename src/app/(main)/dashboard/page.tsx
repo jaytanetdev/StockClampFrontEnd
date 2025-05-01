@@ -41,11 +41,7 @@ const Dashboard = () => {
         borderColor: ["#FF6633", "#0D1274", "#6E6E6E"],
         borderWidth: 1,
         barPercentage: 1,
-        borderRadius: {
-          topLeft: 5,
-          topRight: 5,
-        },
-        barThickness: 40, // ✅ กำหนดความหนาแท่ง (px)
+        barThickness: 50, 
         categoryPercentage: 0.6,
       },
     ],
@@ -72,10 +68,7 @@ const Dashboard = () => {
     <div className="w-full flex-col flex  h-full">
       <Form>
         <div className="text-center border-b-[10px] pt-7 w-full">
-          <RangePickerCustom
-            name="search"
-            prefix={<SearchOutlined />}
-          />
+          <RangePickerCustom name="search" prefix={<SearchOutlined />} />
         </div>
       </Form>
       <div className="flex items-center justify-center px-5 py-10 h-[500px]">
