@@ -33,3 +33,12 @@ select {
        font-size: 16px !important;
   }
 }
+.ant-select-selector {
+  font-size: 16px !important;
+}
+.ant-input,
+.ant-input-affix-wrapper,
+.ant-select,
+.ant-picker {
+  font-size: 16px !important;
+}
