@@ -22,7 +22,7 @@ body {
 input,
 select,
 textarea {
-  font-size: 20px !important;
+  font-size: 18px !important;
 }
 
 @media screen and (max-width: 767px) {
@@ -31,11 +31,11 @@ textarea {
   }
 }
 .ant-select-selector {
-  font-size: 20px !important;
+  font-size: 18px !important;
 }
 .ant-input,
 .ant-input-affix-wrapper,
 .ant-select,
 .ant-picker {
-  font-size: 20px !important;
+  font-size: 18px !important;
 }
