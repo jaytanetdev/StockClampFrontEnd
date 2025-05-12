@@ -405,7 +405,7 @@ const ModalOrder = (prop: ModalOrderType) => {
             </div>
 
             <SelectCustom
-              label="Product"
+              label="asdasdas"
               name="productId"
               placeholder="Product"
               onChange={handleProduct}
@@ -418,7 +418,7 @@ const ModalOrder = (prop: ModalOrderType) => {
               }}
             />
             <InputCustom
-              label="Amount"
+              label="asdasdasdas"
               name="amount"
               type="number"
               placeholder="amount"
