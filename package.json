@@ -5,7 +5,7 @@
   "scripts": {
     "setup": "yarn install",
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint",
     "codegen": "openapi -i http://localhost:9000/doc-json -o ./src/api/generated -c axios --name ApiClient --indent 2"
