@@ -431,7 +431,7 @@ const ModalOrder = (prop: ModalOrderType) => {
                 label="Cost 1 (EA)"
                 name="costEA"
                 placeholder="costEA"
-                className="h-20"
+                className="h-30"
                 type="number"
                 formItemProps={{
                   rules: [
