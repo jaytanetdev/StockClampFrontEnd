@@ -494,9 +494,9 @@ const ModalOrder = (prop: ModalOrderType) => {
             name="platform"
             placeholder="platform"
             options={[
-              { label: "Shopee", value: "SHOPEE" },
-              { label: "Lazada", value: "LAZADA" },
-              { label: "Other", value: "Other" },
+              { label: "asdfasdfasdfsad", value: "SHOPEE" },
+              { label: "Lazvzxcvzxcvzxcvada", value: "LAZADA" },
+              { label: "Othzxcvxzcvxczer", value: "Other" },
             ]}
             formItemProps={{
               rules: [{ required: true, message: "Please select platform" }],
