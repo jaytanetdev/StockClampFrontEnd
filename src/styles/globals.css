@@ -25,6 +25,11 @@ textarea {
   font-size: 18px !important;
 }
 
+@media screen and (max-width: 767px) {
+  input, select, textarea {
+       font-size: 20px !important;
+  }
+}
 .ant-select-selector {
   font-size: 18px !important;
 }
