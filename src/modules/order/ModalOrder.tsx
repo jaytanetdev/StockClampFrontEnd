@@ -1,11 +1,6 @@
 "use client";
-import apiClient from "@/api";
 import {
-  GetMaterialResultDto,
-  GetModelResultDto,
-  GetOptionResultDto,
   GetOrderResultDto,
-  ProductResultGetDto,
 } from "@/api/generated";
 import ButtonCustom from "@/components/Button/ButtonCustom";
 import InputCustom from "@/components/Input/InputCustom";
