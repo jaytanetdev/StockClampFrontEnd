@@ -269,13 +269,7 @@ const ModalOrder = (prop: ModalOrderType) => {
                 rules: [{ required: true, message: "Please select platform" }],
               }}
             />
-            <InputCustom name="tax" label="Tax" addonAfter={<span>%</span>} />
-            <InputCustom
-              name="expenses"
-              type="number"
-              label="Expenses"
-              addonAfter={<span>Bath</span>}
-            />
+          
           </div>
 
           <div className="text-end py-1">
