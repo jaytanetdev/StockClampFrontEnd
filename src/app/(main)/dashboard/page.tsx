@@ -67,7 +67,9 @@ const Dashboard = () => {
   return (
     <div className="w-full flex-col flex  h-full">
       <Form>
-        
+        <div className="text-center border-b-[10px] pt-7 w-full">
+          <RangePickerCustom name="search" prefix={<SearchOutlined />} />
+        </div>
       </Form>
       <div className="flex items-center justify-center px-5 py-10 h-[500px]">
         <Bar data={data} options={options} />
