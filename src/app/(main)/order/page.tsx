@@ -6,37 +6,47 @@ import ButtonCustom from "@/components/Button/ButtonCustom";
 import TableCustom from "@/components/Table/TableCustomer";
 import ModalOrder from "@/modules/order/ModalOrder";
 import { PlusOutlined } from "@ant-design/icons";
-import { Skeleton, TableProps } from "antd";
-import { useEffect, useState } from "react";
+import { TableProps } from "antd";
+import { useEffect, useState, useTransition } from "react";
 
+type SearchOrderType = {
+  page?: number;
+  pageSize?: number;
+};
 export default function OrderPage() {
-  const defaulPage = { page: 1, pageSize: 10 };
+  const defaultPage = { page: 1, pageSize: 10 };
   const [pagination, sePagination] = useState({
-    current: defaulPage.page,
-    pageSize: defaulPage.pageSize,
+    current: defaultPage.page,
+    pageSize: defaultPage.pageSize,
     total: 10,
   });
   const [dataOrder, setDataOrder] = useState<GetOrderResultDto[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [loadingOrder, setLoadingOrder] = useState(true);
+  const [orderPending, startFetchOrder] = useTransition();
 
   useEffect(() => {
+    fetchData(defaultPage);
+  }, []);
+
+  const fetchData = async ({ page, pageSize }: SearchOrderType) => {
     const fetchOrder = async () => {
-      setLoadingOrder(true);
       const resOrder = await apiClient.order.orderControllerFindAllV1(
-        defaulPage.page,
-        defaulPage.pageSize
+        page ?? defaultPage.page,
+        pageSize ?? defaultPage.pageSize
       );
       setDataOrder(resOrder.result);
       sePagination({
-        current: defaulPage.page,
-        pageSize: defaulPage.pageSize,
+        current: defaultPage.page,
+        pageSize: defaultPage.pageSize,
         total: resOrder.total,
       });
-      setLoadingOrder(false);
     };
-    fetchOrder();
-  }, [defaulPage.page, defaulPage.pageSize]);
+    startFetchOrder(fetchOrder);
+  };
+
+  const handlePageChange = async (page: number, pageSize: number) => {
+    fetchData({ page, pageSize });
+  };
 
   const columns: TableProps<GetOrderResultDto>["columns"] = [
     {
@@ -93,49 +103,32 @@ export default function OrderPage() {
       },
     },
   ];
-  const handlePageChange = async (page: number, pageSize: number) => {
-    const resOrder = await apiClient.order.orderControllerFindAllV1(
-      page,
-      pageSize
-    );
-    setDataOrder(resOrder.result);
-    sePagination({
-      current: page,
-      pageSize: pageSize,
-      total: resOrder.total,
-    });
-  };
 
   return (
     <div className="  px-10 py-12 flex-col flex gap-2 ">
-      {loadingOrder ? (
-        <Skeleton active />
-      ) : (
-        <>
-          <div className="flex justify-between items-start ">
-            <p className="font-semibold text-xl ">Order</p>
-            <ButtonCustom onClick={() => setIsModalOpen(true)}>
-              <PlusOutlined /> Add Order
-            </ButtonCustom>
-          </div>
-          <TableCustom<GetOrderResultDto>
-            rowKey={(record) => record?._id ?? `temp_${Math.random()}`}
-            dataSource={dataOrder}
-            columns={columns}
-            dataPage={{
-              total: pagination.total,
-              current: pagination.current,
-              pageSize: pagination.pageSize,
-            }}
-            onPageChange={handlePageChange}
-          />
-          <ModalOrder
-            handleCancel={() => setIsModalOpen(false)}
-            isModalOpen={isModalOpen}
-            setDataOrder={setDataOrder}
-          />
-        </>
-      )}
+      <div className="flex justify-between items-start ">
+        <p className="font-semibold text-xl ">Order</p>
+        <ButtonCustom onClick={() => setIsModalOpen(true)}>
+          <PlusOutlined /> Add Order
+        </ButtonCustom>
+      </div>
+      <TableCustom<GetOrderResultDto>
+        rowKey={(record) => record?._id ?? `temp_${Math.random()}`}
+        dataSource={dataOrder}
+        loading={orderPending}
+        columns={columns}
+        dataPage={{
+          total: pagination.total,
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+        }}
+        onPageChange={handlePageChange}
+      />
+      <ModalOrder
+        handleCancel={() => setIsModalOpen(false)}
+        isModalOpen={isModalOpen}
+        setDataOrder={setDataOrder}
+      />
     </div>
   );
 }

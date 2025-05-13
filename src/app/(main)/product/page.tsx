@@ -12,7 +12,7 @@ import {
   PlusOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import { Form,  TableProps } from "antd";
+import { Form, TableProps } from "antd";
 import { useEffect, useState, useTransition } from "react";
 
 type SearchProductType = {
@@ -20,10 +20,10 @@ type SearchProductType = {
   pageSize?: number;
 };
 export default function ProductPage() {
-  const defaulPage = { page: 1, pageSize: 5 };
+  const defaultPage = { page: 1, pageSize: 5 };
   const [pagination, setPagination] = useState({
-    current: defaulPage.page,
-    pageSize: defaulPage.pageSize,
+    current: defaultPage.page,
+    pageSize: defaultPage.pageSize,
     total: 0,
   });
   const [dataProduct, setDataProduct] = useState<ProductResultDto[]>([]);
@@ -33,24 +33,25 @@ export default function ProductPage() {
   const [PendingOption, startFetchOption] = useTransition();
 
   useEffect(() => {
-    startFetchProduct(async () => {
-      await fetchProduct(defaulPage);
-    });
+    fetchData(defaultPage);
 
     startFetchOption(fetchOption);
   }, []);
 
-  const fetchProduct = async ({ page, pageSize }: SearchProductType) => {
-    const resProduct = await apiClient.product.productControllerFindAllV1(
-      page || defaulPage.page,
-      pageSize || defaulPage.pageSize
-    );
-    setDataProduct(resProduct.result);
-    setPagination({
-      current: page || defaulPage.page,
-      pageSize: pageSize || defaulPage.pageSize,
-      total: resProduct.total,
-    });
+  const fetchData = async ({ page, pageSize }: SearchProductType) => {
+    const fetchProduct = async () => {
+      const resProduct = await apiClient.product.productControllerFindAllV1(
+        page || defaultPage.page,
+        pageSize || defaultPage.pageSize
+      );
+      setDataProduct(resProduct.result);
+      setPagination({
+        current: page || defaultPage.page,
+        pageSize: pageSize || defaultPage.pageSize,
+        total: resProduct.total,
+      });
+    };
+    startFetchProduct(fetchProduct);
   };
   const fetchOption = async () => {
     const resOption = await apiClient.option.optionControllerFindAllV1();
@@ -162,9 +163,7 @@ export default function ProductPage() {
     },
   ];
   const handlePageChange = async (page: number, pageSize: number) => {
-    startFetchProduct(async () => {
-      await fetchProduct({ page, pageSize });
-    });
+    fetchData({ page, pageSize });
   };
 
   return (
