@@ -1,7 +1,5 @@
 "use client";
-import {
-  GetOrderResultDto,
-} from "@/api/generated";
+import { ApiError, CreateOrderDto, GetOrderResultDto } from "@/api/generated";
 import ButtonCustom from "@/components/Button/ButtonCustom";
 import InputCustom from "@/components/Input/InputCustom";
 import ModalCustom from "@/components/Modal/ModalCustom";
@@ -12,6 +10,8 @@ import { Form, Table, TableProps } from "antd";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ModalOrderProduct from "./ModalOrderProduct";
 import { OrderTempItem } from "@/types/order";
+import apiClient from "@/api";
+import { showNotification } from "@/utils/notification";
 
 type ModalOrderType = {
   isModalOpen: boolean;
@@ -31,26 +31,36 @@ const ModalOrder = (prop: ModalOrderType) => {
     }
   }, [prop.isModalOpen]);
 
-  const handleOk = async (data: OrderTempItem) => {
-    console.log(dataOrderTemp, data);
-    // try {
-    //   const res = await apiClient.order.orderControllerCreateV1({
-    //     productId: data.productId,
-    //     amount: data.amount,
-    //     status: CreateOrderDto.status.OPEN,
-    //     cost: 11,
-    //     sellingPrice: 22,
-    //     expenses: 33,
-    //     profit: 44,
-    //   });
-    //   console.log("res", res);
-    //   prop?.setDataOrder((prev) => [...prev, res]);
-    //   showNotification("success", "Success", "บันทึกรายการสำเร็จ");
-    // } catch (e) {
-    //   if (e instanceof ApiError) {
-    //     showNotification("error", "Error", e.body?.message);
-    //   }
-    // }
+  const handleOk = async () => {
+    const formValues = form.getFieldsValue();
+    const orderList = dataOrderTemp.map((item) => ({
+      productId: item.productId,
+      productName: item.productName,
+      amount: item.amount,
+      costEA: item.costEA,
+      sellingPriceEA: item.sellingPriceEA,
+      sellingPriceNet: item.sellingPriceNet,
+    }));
+    try {
+      const res = await apiClient.order.orderControllerCreateV1({
+        platform: formValues.platform,
+        tax: formValues.tax || 0,
+        expenses: formValues.expenses || 0,
+        total: formValues.total || 0,
+        totalExpenses: formValues.totalExpenses || 0,
+        profitNet: formValues.profitNet || 0,
+        status: CreateOrderDto.status.OPEN,
+        orderList,
+        active: true,
+      });
+      console.log("res", res);
+      prop?.setDataOrder((prev) => [...prev, res]);
+      showNotification("success", "Success", "บันทึกรายการสำเร็จ");
+    } catch (e) {
+      if (e instanceof ApiError) {
+        showNotification("error", "Error", e.body?.message);
+      }
+    }
   };
   const updateSummaryFields = (data: OrderTempItem[]) => {
     const getTotal = (field: keyof (typeof data)[number]) =>
@@ -80,10 +90,13 @@ const ModalOrder = (prop: ModalOrderType) => {
   };
 
   const handleChangeExpenses = async (expenses: number) => {
-    const sellingPriceNet = form.getFieldValue("sellingPriceNet");
-    const profit = sellingPriceNet - expenses;
+    const tax = form.getFieldValue("tax");
+    const total = form.getFieldValue("total");
+    const totalExpenses = total * (tax / 100) + expenses;
+    const profit = total - totalExpenses;
     form.setFieldsValue({
-      profit: profit,
+      profitNet: profit,
+      totalExpenses: totalExpenses,
     });
   };
 
@@ -228,7 +241,7 @@ const ModalOrder = (prop: ModalOrderType) => {
 
   const resetValue = () => {
     form.setFieldsValue({
-      tax:undefined,
+      tax: undefined,
       platform: undefined,
       expenses: undefined,
       total: undefined,

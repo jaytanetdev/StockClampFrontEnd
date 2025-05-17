@@ -30,6 +30,7 @@ export type { GetProductResponseDto } from './models/GetProductResponseDto';
 export type { GetUserResponseDto } from './models/GetUserResponseDto';
 export type { GetUserResultDto } from './models/GetUserResultDto';
 export type { ObjectId } from './models/ObjectId';
+export type { OrderItemDto } from './models/OrderItemDto';
 export type { ProductResultDto } from './models/ProductResultDto';
 export type { ProductResultGetDto } from './models/ProductResultGetDto';
 

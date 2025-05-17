@@ -2,15 +2,17 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ObjectId } from './ObjectId';
+import type { OrderItemDto } from './OrderItemDto';
 export type CreateOrderDto = {
-  productId: ObjectId;
-  amount: number;
-  status: CreateOrderDto.status;
-  cost: number;
-  sellingPrice: number;
+  platform: string;
+  tax: number;
   expenses: number;
-  profit: number;
+  total: number;
+  totalExpenses: number;
+  profitNet: number;
+  status: CreateOrderDto.status;
+  orderList: Array<OrderItemDto>;
+  active: boolean;
 };
 export namespace CreateOrderDto {
   export enum status {

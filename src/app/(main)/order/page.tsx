@@ -64,8 +64,8 @@ export default function OrderPage() {
     },
     {
       title: "Net Profit",
-      dataIndex: "profit",
-      key: "profit",
+      dataIndex: "profitNet",
+      key: "profitNet",
       align: "center",
 
       onHeaderCell: () => ({ style: { height: "50px", width: "50px" } }),
